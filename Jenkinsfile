@@ -4,7 +4,7 @@ pipeline {
 
   environment {
     docker_username = 'lehtinei'
-    //DOCKERCREDS = credentials('Docker_credentials')
+  //DOCKERCREDS = credentials('Docker_credentials')
   }
 
   stages {
@@ -57,9 +57,13 @@ pipeline {
         }
       }
     }
-    stage ('push docker app'){
+    stage ('push docker app') {
       environment {
         DOCKERCREDS = credentials('Dockerhub_credentials') //use the credentials just created in this stage
+      }
+      when {
+        beforeAgent true
+        branch 'master'
       }
       steps {
         input message: 'Do you want to push to docker hub?', ok: 'Yes'
@@ -69,6 +73,24 @@ pipeline {
         sh 'ci/push-docker.sh'
       }
     }
+    stage('component test') {
+          options {
+            skipDefaultCheckout(true)
+          }
+          agent {
+            docker {
+              image 'gradle:6-jdk11'
+            }
+          }
+          when { 
+            beforeAgent true
+            branch pattern: "^(?!dev/).+", comparator: "REGEXP"}
+          steps {
+            unstash 'code'
+            sh 'ci/component-test.sh'
+            //junit 'app/build/test-results/test/TEST-*.xml'
+          }
+        }
   }
   post {
     cleanup {
