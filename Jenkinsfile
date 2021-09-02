@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('clone down'){
+    stage('clone down') {
       agent {
         label 'swarm'
       }
@@ -18,8 +18,8 @@ pipeline {
         }
 
         stage('Build app') {
-          options { 
-            skipDefaultCheckout(true) 
+          options {
+            skipDefaultCheckout(true)
           }
           agent {
             docker {
@@ -33,8 +33,8 @@ pipeline {
           }
         }
         stage('test app') {
-          options { 
-            skipDefaultCheckout(true) 
+          options {
+            skipDefaultCheckout(true)
           }
           agent {
             docker {
@@ -49,10 +49,10 @@ pipeline {
         }
       }
     }
-
   }
   post {
     cleanup {
         deleteDir() /* clean up our workspace */
+    }
   }
 }
