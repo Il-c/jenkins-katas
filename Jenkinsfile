@@ -35,6 +35,21 @@ pipeline {
             sh 'ls -a'
           }
         }
+        stage('test app') {
+          options { 
+            skipDefaultCheckout(true) 
+          }
+          agent {
+            docker {
+              image 'gradle:6-jdk11'
+            }
+          }
+          steps {
+            unstash 'code'
+            sh 'ci/unit-test-app.sh'
+            junit 'app/build/test-results/test/TEST-*.xml'
+          }
+        }
       }
     }
 
