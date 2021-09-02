@@ -77,11 +77,7 @@ pipeline {
           options {
             skipDefaultCheckout(true)
           }
-          agent {
-            docker {
-              image 'gradle:6-jdk11'
-            }
-          }
+          
           when { 
             beforeAgent true
             branch pattern: "^(?!dev/).+", comparator: "REGEXP"}
