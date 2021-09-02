@@ -59,7 +59,7 @@ pipeline {
     }
     stage ('push docker app'){
       environment {
-        DOCKERCREDS = credentials('docker_login') //use the credentials just created in this stage
+        DOCKERCREDS = credentials('Docker_credentials') //use the credentials just created in this stage
       }
       steps {
         input message: 'Do you want to push to docker hub?', ok: 'Yes'
