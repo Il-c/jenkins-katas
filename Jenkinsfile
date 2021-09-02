@@ -77,20 +77,17 @@ pipeline {
           options {
             skipDefaultCheckout(true)
           }
-          agent {
-            docker {
-              image 'gradle:6-jdk11'
-            }
-          }
-          when { 
+          
+          when {
             beforeAgent true
-            branch pattern: "^(?!dev/).+", comparator: "REGEXP"}
+            branch pattern: '^(?!dev/).+', comparator: 'REGEXP'
+          }
           steps {
             unstash 'code'
             sh 'ci/component-test.sh'
-            //junit 'app/build/test-results/test/TEST-*.xml'
+          //junit 'app/build/test-results/test/TEST-*.xml'
           }
-        }
+    }
   }
   post {
     cleanup {
