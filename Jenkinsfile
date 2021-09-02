@@ -62,6 +62,7 @@ pipeline {
         DOCKERCREDS = credentials('docker_login') //use the credentials just created in this stage
       }
       steps {
+        input message: 'Do you want to push to docker hub?', ok: 'Yes'
         unstash 'code' //unstash the repository code
         sh 'ci/build-docker.sh'
         sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin' //login to docker hub with the credentials above
