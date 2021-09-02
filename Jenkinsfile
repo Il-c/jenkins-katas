@@ -30,9 +30,6 @@ pipeline {
             unstash 'code'
             sh 'ci/build-app.sh'
             archiveArtifacts 'app/build/libs/'
-            sh 'ls -a'
-            deleteDir()
-            sh 'ls -a'
           }
         }
         stage('test app') {
